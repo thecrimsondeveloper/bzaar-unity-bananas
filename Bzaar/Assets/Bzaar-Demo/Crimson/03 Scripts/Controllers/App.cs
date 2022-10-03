@@ -22,9 +22,9 @@ namespace Bzaar
         public Outfit outfit;
         public LoadingScreen loadingScreen;
         public AvatarDisplaying Avatars;
+        public Echo Echo3D_Manager;
 
         public Visuals clothingVisuals;
-        public Clothing clothingModels;
 
         public int touchCountLastFrame = 0;
         public Vector3 lastMousePosition;

@@ -25,6 +25,7 @@ namespace Bzaar
         [Header("References")]
         public GameObject top;
         public GameObject bottom;
+        public GameObject meshParent;
 
         [Header("Public Objects")]
         public GameObject selectedObject;

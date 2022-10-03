@@ -25,8 +25,8 @@ namespace Bzaar
         [SerializeField] GameObject outfitModePanel;
         [SerializeField] GameObject sculptModePanel;
         [SerializeField] GameObject renderModePanel;
-    
- 
+
+
         [Header("Grid Panels")]
         [SerializeField] GameObject topsGridPanel;
         [SerializeField] GameObject bottomsGridPanel;
@@ -46,6 +46,10 @@ namespace Bzaar
         [SerializeField] Button takePhotoBtn;
         [SerializeField] Button recordBtn;
 
+        [Header("Prefabs")]
+        [SerializeField] GameObject spawnClothingBtnPrefab;
+
+        [Header("References")]
         public CustomDropDown modeDropdown;
 
         [SerializeField] private Button selectedBtn = null;
@@ -116,13 +120,10 @@ namespace Bzaar
         }
 
 
-
-
         public void RefreshOutFitSelections()
         {
-
-            RefreshTops();
-            RefreshBottoms();
+            PopulateClothingButtons(ClothingType.top);
+            PopulateClothingButtons(ClothingType.bottom);
             StartCoroutine(LateRefreshOutFitSelections());
         }
         IEnumerator LateRefreshOutFitSelections()
@@ -133,57 +134,60 @@ namespace Bzaar
             App.instance.previewManager.SetButtonPreviews();
         }
 
-        public void RefreshTops()
+        public void PopulateClothingButtons(ClothingType cloType)
         {
-            Transform[] topsTransform = topsGridPanel.GetComponentsInChildren<Transform>();
-            foreach (Transform topTransform in topsTransform)
+            StartCoroutine(PopulateClothingButtons_Routine(cloType));
+        }
+
+        public IEnumerator PopulateClothingButtons_Routine(ClothingType cloType)
+        {
+            GameObject parentPanel = cloType == ClothingType.top ? topsGridPanel : bottomsGridPanel;
+            Transform[] topsTransform = parentPanel.GetComponentsInChildren<Transform>();
+            foreach (Transform cloTransforms in topsTransform)
             {
-                if (topTransform != topsGridPanel.transform)
-                    Destroy(topTransform.gameObject);
+                if (cloTransforms != parentPanel.transform)
+                    Destroy(cloTransforms.gameObject);
             }
 
-            foreach (GameObject item in App.instance.clothingModels.tops)
+            yield return new WaitUntil(()=> App.instance.Echo3D_Manager.entries.Count > 0);
+            foreach (Entry entry in App.instance.Echo3D_Manager.entries)
             {
-                GameObject obj = Instantiate(App.instance.clothingModels.gridImagePrefab);
-                obj.transform.parent = topsGridPanel.transform;
+                GameObject obj = Instantiate(spawnClothingBtnPrefab, Vector3.zero, Quaternion.identity, parentPanel.transform);
                 obj.transform.localScale = Vector3.one;
-
-                if (obj.TryGetComponent(out SpawnClothingBtn spawnBtn))
-                {
-                    spawnBtn.clothingPrefab = item;
-                    spawnBtn.spawnType = ClothingType.top;
-                    spawnBtn.SetupButton(item.name);
-                }
-
-                obj.name = item.name + "-SPAWN_BUTTON";
+                if (!obj.GetComponent<SpawnClothingBtn>()) continue;
+                
+                    obj.GetComponent<SpawnClothingBtn>().clothingEntry = entry;
+                    obj.GetComponent<SpawnClothingBtn>().spawnType = cloType;
+                    obj.GetComponent<SpawnClothingBtn>().SetupButton(entry);
+                
             }
         }
 
         public void RefreshBottoms()
         {
-            Transform[] bottomsTransform = bottomsGridPanel.GetComponentsInChildren<Transform>();
-            foreach (Transform bottomTransform in bottomsTransform)
-            {
-                if (bottomTransform != bottomsGridPanel.transform)
-                    Destroy(bottomTransform.gameObject);
-            }
+            //Transform[] bottomsTransform = bottomsGridPanel.GetComponentsInChildren<Transform>();
+            //foreach (Transform bottomTransform in bottomsTransform)
+            //{
+            //    if (bottomTransform != bottomsGridPanel.transform)
+            //        Destroy(bottomTransform.gameObject);
+            //}
 
-            foreach (GameObject item in App.instance.clothingModels.bottoms)
-            {
-                GameObject obj = Instantiate(App.instance.clothingModels.gridImagePrefab);
-                obj.transform.parent = bottomsGridPanel.transform;
-                obj.transform.localScale = Vector3.one;
+            //foreach (GameObject item in App.instance.clothingModels.bottoms)
+            //{
+            //    GameObject obj = Instantiate(App.instance.clothingModels.gridImagePrefab);
+            //    obj.transform.parent = bottomsGridPanel.transform;
+            //    obj.transform.localScale = Vector3.one;
 
 
-                if (obj.TryGetComponent(out SpawnClothingBtn spawnBtn))
-                {
-                    spawnBtn.clothingPrefab = item;
-                    spawnBtn.spawnType = ClothingType.bottom;
-                    spawnBtn.SetupButton(item.name);
-                }
+            //    if (obj.TryGetComponent(out SpawnClothingBtn spawnBtn))
+            //    {
+            //        spawnBtn.clothingEntry = item;
+            //        spawnBtn.spawnType = ClothingType.bottom;
+            //        spawnBtn.SetupButton(item.name);
+            //    }
 
-                obj.name = item.name + "-SPAWN_BUTTON";
-            }
+            //    obj.name = item.name + "-SPAWN_BUTTON";
+            //}
         }
 
         

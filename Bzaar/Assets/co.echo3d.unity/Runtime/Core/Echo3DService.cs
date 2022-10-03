@@ -371,7 +371,7 @@ public class Echo3DService : MonoBehaviour
         yield break;
     }
 
-    private Database ParseDatabaseFromJson(string json)
+    public Database ParseDatabaseFromJson(string json)
     {
         Database holoData = null;
         // Parse database

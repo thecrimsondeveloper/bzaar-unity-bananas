@@ -13,7 +13,7 @@ using UnityEngine;
 public class Entry
 {
     // Entry properties
-    private string id;
+    [SerializeField] private string id;
     private Target target;
     private Hologram hologram;
     private bool[] sdks;

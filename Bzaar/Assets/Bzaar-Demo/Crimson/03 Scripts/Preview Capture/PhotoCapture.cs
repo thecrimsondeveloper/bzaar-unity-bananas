@@ -32,11 +32,7 @@ namespace Bzaar
             CurrentlyCapturing = true;
             GameObject spawnedObject = Instantiate(obj,previewManager.previewObjParent.transform);
 
-            yield return new WaitForEndOfFrame();
-            foreach (MeshRenderer item in obj.GetComponentsInChildren<MeshRenderer>())
-            {
-                item.material = App.instance.clothingModels.defaultMaterial;
-            }
+  
             yield return new WaitForEndOfFrame();
 
             Texture2D preview = new Texture2D(PREVIEW_RESOLUTION, PREVIEW_RESOLUTION, TextureFormat.RGB24, false);
