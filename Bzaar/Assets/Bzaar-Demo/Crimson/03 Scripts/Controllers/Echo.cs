@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using static System.Net.WebRequestMethods;
-using static UnityEditor.Progress;
+//using static UnityEditor.Progress;
 using static UnityEngine.Rendering.DebugUI;
 
 public class Echo : MonoBehaviour
