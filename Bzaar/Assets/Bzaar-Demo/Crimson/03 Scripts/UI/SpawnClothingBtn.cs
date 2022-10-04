@@ -48,10 +48,12 @@ namespace Bzaar
             if (spawnType == ClothingType.top)
             {
                 spawnedArticle.transform.parent = App.instance.outfit.top.transform;
+                App.instance.outfit.spawnedTop = spawnedArticle;
             }
             if (spawnType == ClothingType.bottom)
             {
                 spawnedArticle.transform.parent = App.instance.outfit.bottom.transform;
+                App.instance.outfit.spawnedBottom = spawnedArticle;
             }
 
             spawnedArticle.transform.localScale = Vector3.one;
@@ -72,7 +74,7 @@ namespace Bzaar
             
             spawnedArticle = null;
 
-            App.instance.UI.ResetUIView();
+           App.instance.UI.ResetUIView();
         }
 
         public void SetSpawnedArticle(GameObject obj)

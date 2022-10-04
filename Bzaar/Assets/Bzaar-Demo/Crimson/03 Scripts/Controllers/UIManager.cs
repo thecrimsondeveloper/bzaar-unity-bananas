@@ -131,7 +131,7 @@ namespace Bzaar
             yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
-            App.instance.previewManager.SetButtonPreviews();
+            //App.instance.previewManager.SetButtonPreviews();
         }
 
         public void PopulateClothingButtons(ClothingType cloType)
@@ -163,32 +163,6 @@ namespace Bzaar
             }
         }
 
-        public void RefreshBottoms()
-        {
-            //Transform[] bottomsTransform = bottomsGridPanel.GetComponentsInChildren<Transform>();
-            //foreach (Transform bottomTransform in bottomsTransform)
-            //{
-            //    if (bottomTransform != bottomsGridPanel.transform)
-            //        Destroy(bottomTransform.gameObject);
-            //}
-
-            //foreach (GameObject item in App.instance.clothingModels.bottoms)
-            //{
-            //    GameObject obj = Instantiate(App.instance.clothingModels.gridImagePrefab);
-            //    obj.transform.parent = bottomsGridPanel.transform;
-            //    obj.transform.localScale = Vector3.one;
-
-
-            //    if (obj.TryGetComponent(out SpawnClothingBtn spawnBtn))
-            //    {
-            //        spawnBtn.clothingEntry = item;
-            //        spawnBtn.spawnType = ClothingType.bottom;
-            //        spawnBtn.SetupButton(item.name);
-            //    }
-
-            //    obj.name = item.name + "-SPAWN_BUTTON";
-            //}
-        }
 
         
 
@@ -276,6 +250,11 @@ namespace Bzaar
         {
             ToggleFocussedUI(avatarBtn, avatarsPanel);
             App.instance.Avatars.SpawnAvatar(index);
+        }
+
+        public void SaveCurrentOutfit()
+        {
+            App.instance.SaveManager.SaveOutfit(App.instance.outfit.SaveCurrentOutfit());
         }
 
         #endregion

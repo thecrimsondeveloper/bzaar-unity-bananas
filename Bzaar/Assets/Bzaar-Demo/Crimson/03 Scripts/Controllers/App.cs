@@ -23,6 +23,7 @@ namespace Bzaar
         public LoadingScreen loadingScreen;
         public AvatarDisplaying Avatars;
         public Echo Echo3D_Manager;
+        public SaveManager SaveManager;
 
         public Visuals clothingVisuals;
 

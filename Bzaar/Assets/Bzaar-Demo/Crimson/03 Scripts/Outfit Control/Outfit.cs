@@ -27,6 +27,10 @@ namespace Bzaar
         public GameObject bottom;
         public GameObject meshParent;
 
+        [Header("Current Clothing")]
+        public GameObject spawnedTop;
+        public GameObject spawnedBottom;
+
         [Header("Public Objects")]
         public GameObject selectedObject;
 
@@ -49,6 +53,11 @@ namespace Bzaar
         {
             SelectObject();
             CalculateRotation();
+
+            if (Input.GetKey(KeyCode.Alpha0))
+            {
+                SaveCurrentOutfit();
+            }
         }
 
 
@@ -118,14 +127,30 @@ namespace Bzaar
             if (facingRight) dir = FacingDir.right;
             if (facingBackward) dir = FacingDir.backward;
 
-            //Debug.Log(yVal + " " + dir);
 
             return dir;
         }
 
+        public ArticleSave GenerateSaveData(GameObject articleObj)
+        {
+            ArticleSave article = new ArticleSave();
+            article.entry = new Entry();
+            article.color = articleObj.GetComponent<MeshRenderer>().material.color;
+            article.textureName = articleObj.GetComponent<MeshRenderer>().material.mainTexture.name;
 
-   
 
+            return article;
+        }
+
+        public OutfitSave SaveCurrentOutfit()
+        {
+            OutfitSave save = new OutfitSave();
+            save.outfitName = "OUTFITSAVE" + DateTime.Now.ToString("hh:mm"); 
+
+            save.topEntry = GenerateSaveData(spawnedTop);
+            save.bottomEntry = GenerateSaveData(spawnedBottom);
+            return save;
+        }
 
     }
 }
