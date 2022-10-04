@@ -46,7 +46,6 @@ public class SaveManager : MonoBehaviour
         Debug.Log(saveString);
         PlayerPrefs.SetString(save.key, saveString);
 
-
         using (StreamWriter writer = new StreamWriter("Assets/Resources/outfitHashes.txt",true))
         {
             writer.WriteLine(save.key);

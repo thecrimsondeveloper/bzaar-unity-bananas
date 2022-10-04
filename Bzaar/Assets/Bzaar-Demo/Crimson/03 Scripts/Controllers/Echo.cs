@@ -11,8 +11,8 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class Echo : MonoBehaviour
 {
-    const string API_KEY = "empty-queen-9732";
-    const string SECURITY_KEY = "Yx99Xr1XiG1y21U3aQ129hWC";
+    public const string API_KEY = "empty-queen-9732";
+    public const string SECURITY_KEY = "Yx99Xr1XiG1y21U3aQ129hWC";
     public GameObject EchoHologramPrefab;
     public GameObject EchoGLTFPrefab;
 

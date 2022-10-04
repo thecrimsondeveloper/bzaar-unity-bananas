@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using System.Net;
+using System;
+using UnityEngine.Networking;
 
 namespace Bzaar
 {
@@ -92,6 +95,32 @@ namespace Bzaar
         IEnumerator LateButtonSetup()
         { 
             yield return new WaitForEndOfFrame();
+            if (clothingEntry.getAdditionalData().TryGetValue("screenShotStorageID", out string screenShotVal))
+            {
+                string downloadLink = $"https://api.echo3d.co/query?key={Echo.API_KEY}&file={screenShotVal}";
+                using (UnityWebRequest webRequest = UnityWebRequest.Get(downloadLink))
+                {
+                    // Request and wait for the desired page.
+                    yield return webRequest.SendWebRequest();
+
+                    string[] pages = downloadLink.Split('/');
+                    int page = pages.Length - 1;
+
+                    switch (webRequest.result)
+                    {
+                        case UnityWebRequest.Result.ConnectionError:
+                        case UnityWebRequest.Result.DataProcessingError:
+                            Debug.LogError(pages[page] + ": Error: " + webRequest.error);
+                            break;
+                        case UnityWebRequest.Result.ProtocolError:
+                            Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
+                            break;
+                        case UnityWebRequest.Result.Success:
+                            Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                            break;
+                    }
+                }
+            }
             // App.instance.previewManager.AddPreviewButtonInfo(clothingEntry,btnImage);
 
         }
