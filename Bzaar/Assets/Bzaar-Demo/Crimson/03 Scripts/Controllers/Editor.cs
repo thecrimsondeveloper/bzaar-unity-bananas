@@ -13,9 +13,9 @@ namespace Bzaar
         render
     }
 
-    public class App : MonoBehaviour
+    public class Editor : MonoBehaviour
     {
-        public static App instance;
+        public static Editor instance;
 
         public UIManager UI;
         public PreviewManager previewManager;
@@ -23,7 +23,7 @@ namespace Bzaar
         public LoadingScreen loadingScreen;
         public AvatarDisplaying Avatars;
         public Echo Echo3D_Manager;
-        public SaveManager SaveManager;
+        public SaveManager saveManager;
 
         public Visuals clothingVisuals;
 
@@ -76,7 +76,7 @@ namespace Bzaar
         IEnumerator SetStartState_Coroutine()
         {
             yield return new WaitForSeconds(0.25f);
-            App.instance.UI.ResetUIView();
+            Editor.instance.UI.ResetUIView();
             loadingScreen.StopLoading();
         }
     }

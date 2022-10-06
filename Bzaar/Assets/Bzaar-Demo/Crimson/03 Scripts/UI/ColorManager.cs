@@ -22,7 +22,7 @@ namespace Bzaar
         {
             colorBox.color = color;
             SetValues(color);
-            App.instance.outfit.materialController.SetSelectedObjColor(color);
+            Editor.instance.outfit.materialController.SetSelectedObjColor(color);
         }
 
         private void SetValues(Color finalColor)

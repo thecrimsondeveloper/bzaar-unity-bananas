@@ -67,7 +67,7 @@ namespace Bzaar
 
         public void SetupTexturePanel()
         {
-            foreach (Sprite spr in App.instance.clothingVisuals.textures)
+            foreach (Sprite spr in Editor.instance.clothingVisuals.textures)
             {
                 GameObject go = Instantiate(textureSelectPrefab);
                 if (go.TryGetComponent(out UnityEngine.UI.Image img))
@@ -113,10 +113,10 @@ namespace Bzaar
        
         public void SetUIMode()
         {
-            outfitModePanel.SetActive(App.instance.mode == Mode.outfit);
-            materialModePanel.SetActive(App.instance.mode == Mode.texture);
-            sculptModePanel.SetActive(App.instance.mode == Mode.sculpt);
-            renderModePanel.SetActive(App.instance.mode == Mode.render);
+            outfitModePanel.SetActive(Editor.instance.mode == Mode.outfit);
+            materialModePanel.SetActive(Editor.instance.mode == Mode.texture);
+            sculptModePanel.SetActive(Editor.instance.mode == Mode.sculpt);
+            renderModePanel.SetActive(Editor.instance.mode == Mode.render);
         }
 
 
@@ -149,8 +149,8 @@ namespace Bzaar
                     Destroy(cloTransforms.gameObject);
             }
 
-            yield return new WaitUntil(()=> App.instance.Echo3D_Manager.entries.Count > 0);
-            foreach (Entry entry in App.instance.Echo3D_Manager.entries)
+            yield return new WaitUntil(()=> Editor.instance.Echo3D_Manager.entries.Count > 0);
+            foreach (Entry entry in Editor.instance.Echo3D_Manager.entries)
             {
                 GameObject obj = Instantiate(spawnClothingBtnPrefab, Vector3.zero, Quaternion.identity, parentPanel.transform);
                 obj.transform.localScale = Vector3.one;
@@ -249,12 +249,12 @@ namespace Bzaar
         public void SpawnAvatar(int index)
         {
             ToggleFocussedUI(avatarBtn, avatarsPanel);
-            App.instance.Avatars.SpawnAvatar(index);
+            Editor.instance.Avatars.SpawnAvatar(index);
         }
 
         public void SaveCurrentOutfit()
         {
-            App.instance.SaveManager.SaveOutfit(App.instance.outfit.SaveCurrentOutfit());
+            Editor.instance.saveManager.SaveOutfit(Editor.instance.outfit.SaveCurrentOutfit());
         }
 
         #endregion

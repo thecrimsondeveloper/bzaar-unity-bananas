@@ -33,8 +33,8 @@ namespace Bzaar
             if (spawnedArticle != null) return;
 
       
-            GameObject GLTFEchoObj = App.instance.Echo3D_Manager.SpawnEchoAsset(clothingEntry, this);
-            GLTFEchoObj.transform.parent = App.instance.outfit.meshParent.transform;
+            GameObject GLTFEchoObj = Editor.instance.Echo3D_Manager.SpawnEchoAsset(clothingEntry, this);
+            GLTFEchoObj.transform.parent = Editor.instance.outfit.meshParent.transform;
            
 
             StartCoroutine(SpawnArticle_Routine());
@@ -50,13 +50,13 @@ namespace Bzaar
             //SET THE PARENT
             if (spawnType == ClothingType.top)
             {
-                spawnedArticle.transform.parent = App.instance.outfit.top.transform;
-                App.instance.outfit.spawnedTop = spawnedArticle;
+                spawnedArticle.transform.parent = Editor.instance.outfit.top.transform;
+                Editor.instance.outfit.spawnedTop = spawnedArticle;
             }
             if (spawnType == ClothingType.bottom)
             {
-                spawnedArticle.transform.parent = App.instance.outfit.bottom.transform;
-                App.instance.outfit.spawnedBottom = spawnedArticle;
+                spawnedArticle.transform.parent = Editor.instance.outfit.bottom.transform;
+                Editor.instance.outfit.spawnedBottom = spawnedArticle;
             }
 
             spawnedArticle.transform.localScale = Vector3.one;
@@ -77,7 +77,7 @@ namespace Bzaar
             
             spawnedArticle = null;
 
-           App.instance.UI.ResetUIView();
+            Editor.instance.UI.ResetUIView();
         }
 
         public void SetSpawnedArticle(GameObject obj)

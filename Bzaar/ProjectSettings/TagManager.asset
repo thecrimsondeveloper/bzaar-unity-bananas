@@ -7,6 +7,8 @@ TagManager:
   - Outfit
   - Article
   - Preview Camera
+  - Editor Camera
+  - Closet Camera
   layers:
   - Default
   - TransparentFX
