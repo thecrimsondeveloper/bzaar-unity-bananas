@@ -85,7 +85,7 @@ namespace Bzaar
                 go.transform.localScale = Vector3.one;
             }
 
-            App.instance.UI.ResetUIView();
+            
         }
 
         public void ClearUIView()
