@@ -113,10 +113,10 @@ namespace Bzaar
        
         public void SetUIMode()
         {
-            outfitModePanel.SetActive(Editor.instance.mode == Mode.outfit);
-            materialModePanel.SetActive(Editor.instance.mode == Mode.texture);
-            sculptModePanel.SetActive(Editor.instance.mode == Mode.sculpt);
-            renderModePanel.SetActive(Editor.instance.mode == Mode.render);
+            outfitModePanel.SetActive(Editor.instance.mode == EditorMode.outfit);
+            materialModePanel.SetActive(Editor.instance.mode == EditorMode.texture);
+            sculptModePanel.SetActive(Editor.instance.mode == EditorMode.sculpt);
+            renderModePanel.SetActive(Editor.instance.mode == EditorMode.render);
         }
 
 
@@ -149,8 +149,8 @@ namespace Bzaar
                     Destroy(cloTransforms.gameObject);
             }
 
-            yield return new WaitUntil(()=> Editor.instance.Echo3D_Manager.entries.Count > 0);
-            foreach (Entry entry in Editor.instance.Echo3D_Manager.entries)
+            yield return new WaitUntil(()=> App.instance.Echo3D_Manager.entries.Count > 0);
+            foreach (Entry entry in App.instance.Echo3D_Manager.entries)
             {
                 GameObject obj = Instantiate(spawnClothingBtnPrefab, Vector3.zero, Quaternion.identity, parentPanel.transform);
                 obj.transform.localScale = Vector3.one;
@@ -254,7 +254,7 @@ namespace Bzaar
 
         public void SaveCurrentOutfit()
         {
-            Editor.instance.saveManager.SaveOutfit(Editor.instance.outfit.SaveCurrentOutfit());
+            App.instance.saveManager.SaveOutfit(Editor.instance.outfit.SaveCurrentOutfit());
         }
 
         #endregion

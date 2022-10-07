@@ -3639,7 +3639,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &704800134
 GameObject:
@@ -4461,6 +4461,120 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837819760}
   m_CullTransparentMesh: 1
+--- !u!1 &905313792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 905313793}
+  - component: {fileID: 905313794}
+  - component: {fileID: 905313795}
+  - component: {fileID: 905313796}
+  m_Layer: 0
+  m_Name: App
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &905313793
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905313792}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1093941968}
+  - {fileID: 1171008231}
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &905313794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905313792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383c722179e4b4f8c9184b90495eb389, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UI: {fileID: 0}
+  saveManager: {fileID: 0}
+  loadingScreen: {fileID: 0}
+  Echo3D_Manager: {fileID: 0}
+  state: 0
+  onAppStateChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 905313795}
+        m_TargetAssemblyTypeName: Bzaar.Editor, Assembly-CSharp
+        m_MethodName: AppStateChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 905313796}
+        m_TargetAssemblyTypeName: Bzaar.Closet, Assembly-CSharp
+        m_MethodName: AppStateChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  touchCountLastFrame: 0
+  lastMousePosition: {x: 0, y: 0, z: 0}
+--- !u!114 &905313795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905313792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e6344c79433ec4a81a41999e503746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EditorParent: {fileID: 0}
+  previewManager: {fileID: 1431080995}
+  outfit: {fileID: 2957609555114776463}
+  Avatars: {fileID: 2957609554935729732}
+  clothingVisuals: {fileID: 11400000, guid: 29d421ae14048b047981244fe2a3709a, type: 2}
+  mode: 0
+--- !u!114 &905313796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905313792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f60f4c6ef66e34ff08edb5da07a7f547, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ClosetParent: {fileID: 1171008230}
+  clothingVisuals: {fileID: 0}
 --- !u!1 &909026142
 GameObject:
   m_ObjectHideFlags: 0
@@ -4549,7 +4663,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6276220726193854208, guid: 51602402090e5704d8b87ed9833e2ae3, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6276220726193854208, guid: 51602402090e5704d8b87ed9833e2ae3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4645,17 +4759,6 @@ PrefabInstance:
       objectReference: {fileID: 462801267}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51602402090e5704d8b87ed9833e2ae3, type: 3}
---- !u!114 &922506140 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5058070232254971075, guid: 338c8528bfd7b8448814cc63958c1196, type: 3}
-  m_PrefabInstance: {fileID: 1998490621}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 119d1f8748ffebb42a12c8beae631b50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &925236808
 GameObject:
   m_ObjectHideFlags: 0
@@ -5127,37 +5230,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1093941968}
-  - component: {fileID: 1093941967}
   m_Layer: 0
   m_Name: Editor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1093941967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1093941966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7e6344c79433ec4a81a41999e503746, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UI: {fileID: 213226848}
-  previewManager: {fileID: 1431080995}
-  outfit: {fileID: 2957609555114776463}
-  loadingScreen: {fileID: 909026144}
-  Avatars: {fileID: 2957609554935729732}
-  Echo3D_Manager: {fileID: 922506140}
-  saveManager: {fileID: 0}
-  clothingVisuals: {fileID: 11400000, guid: 29d421ae14048b047981244fe2a3709a, type: 2}
-  touchCountLastFrame: 0
-  lastMousePosition: {x: 0, y: 0, z: 0}
-  mode: 0
+  m_IsActive: 1
 --- !u!4 &1093941968
 Transform:
   m_ObjectHideFlags: 0
@@ -5165,7 +5244,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1093941966}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5177,8 +5256,8 @@ Transform:
   - {fileID: 1172225578}
   - {fileID: 1431080997}
   - {fileID: 1998490622}
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 905313793}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1104582426
 GameObject:
@@ -5786,6 +5865,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1157325977}
   m_CullTransparentMesh: 1
+--- !u!1 &1171008230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1171008231}
+  m_Layer: 0
+  m_Name: Closet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1171008231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171008230}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 905313793}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1172225577
 GameObject:
   m_ObjectHideFlags: 0
@@ -8025,7 +8135,7 @@ Transform:
   m_Children:
   - {fileID: 113447195}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1701300251
 GameObject:
@@ -9830,7 +9940,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3430389853051458371, guid: 338c8528bfd7b8448814cc63958c1196, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3430389853051458371, guid: 338c8528bfd7b8448814cc63958c1196, type: 3}
       propertyPath: m_LocalPosition.x

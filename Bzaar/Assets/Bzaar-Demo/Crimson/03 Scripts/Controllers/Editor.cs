@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Bzaar
 {
-    public enum Mode
+    public enum EditorMode
     {
         outfit,
         texture,
@@ -17,20 +17,16 @@ namespace Bzaar
     {
         public static Editor instance;
 
-        public UIManager UI;
+        [Header("References")]
+        [SerializeField] GameObject EditorParent;
         public PreviewManager previewManager;
         public Outfit outfit;
-        public LoadingScreen loadingScreen;
         public AvatarDisplaying Avatars;
-        public Echo Echo3D_Manager;
-        public SaveManager saveManager;
-
+        
+        [Header("Data")]
         public Visuals clothingVisuals;
-
-        public int touchCountLastFrame = 0;
-        public Vector3 lastMousePosition;
-
-        public Mode mode;
+        
+        public EditorMode mode;
 
         private void Awake()
         {
@@ -46,8 +42,8 @@ namespace Bzaar
 
         void Start()
         {
-            loadingScreen.StartLoading();
-            UI.SetupTexturePanel();
+            App.instance.loadingScreen.StartLoading();
+            App.instance.UI.SetupTexturePanel();
         }
 
         private void Update()
@@ -55,29 +51,41 @@ namespace Bzaar
             SetMode();
         }
 
-        private void LateUpdate()
-        {
-            touchCountLastFrame = Input.touchCount;
-            lastMousePosition = Input.touchCount > 0 ? Input.mousePosition : Vector3.zero;
-        }
+
 
         public void SetMode()
         {
-            mode = (Mode)UI.modeDropdown.currentlySelectedIndex;
-            UI.SetUIMode();
+            mode = (EditorMode)App.instance.UI.modeDropdown.currentlySelectedIndex;
+            App.instance.UI.SetUIMode();
         }
 
         public void SetStartEditorState()
         {
-            UI.SetUIMode();
+            App.instance.UI.SetUIMode();
             StartCoroutine(SetStartState_Coroutine());
         }
 
         IEnumerator SetStartState_Coroutine()
         {
             yield return new WaitForSeconds(0.25f);
-            Editor.instance.UI.ResetUIView();
-            loadingScreen.StopLoading();
+            App.instance.UI.ResetUIView();
+            App.instance.loadingScreen.StopLoading();
+        }
+
+        public void AppStateChanged()
+        {
+            if(App.instance.IsState(AppState.None))
+            {
+
+            }
+            if(App.instance.IsState(AppState.Editor))
+            {
+
+            }
+            if(App.instance.IsState(AppState.Closet))
+            {
+                
+            }
         }
     }
 }

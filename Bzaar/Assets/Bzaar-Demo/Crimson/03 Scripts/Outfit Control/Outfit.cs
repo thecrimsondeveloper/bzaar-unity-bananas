@@ -92,11 +92,11 @@ namespace Bzaar
 
         void CalculateRotation()
         {
-            if(Editor.instance.touchCountLastFrame > 1)            return;
-            if(Editor.instance.lastMousePosition == Vector3.zero)  return;
+            if(App.instance.touchCountLastFrame > 1)            return;
+            if(App.instance.lastMousePosition == Vector3.zero)  return;
             if(Input.touchCount != 1)                           return;
 
-            float yChange = Editor.instance.lastMousePosition.x - Input.mousePosition.x;
+            float yChange = App.instance.lastMousePosition.x - Input.mousePosition.x;
             transform.Rotate(Vector3.up * rotationSensititivity * Time.deltaTime * yChange);
         }
 

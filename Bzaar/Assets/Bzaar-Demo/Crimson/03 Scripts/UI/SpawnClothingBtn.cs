@@ -33,7 +33,7 @@ namespace Bzaar
             if (spawnedArticle != null) return;
 
       
-            GameObject GLTFEchoObj = Editor.instance.Echo3D_Manager.SpawnEchoAsset(clothingEntry, this);
+            GameObject GLTFEchoObj = App.instance.Echo3D_Manager.SpawnEchoAsset(clothingEntry, this);
             GLTFEchoObj.transform.parent = Editor.instance.outfit.meshParent.transform;
            
 
@@ -77,7 +77,7 @@ namespace Bzaar
             
             spawnedArticle = null;
 
-            Editor.instance.UI.ResetUIView();
+            App.instance.UI.ResetUIView();
         }
 
         public void SetSpawnedArticle(GameObject obj)
