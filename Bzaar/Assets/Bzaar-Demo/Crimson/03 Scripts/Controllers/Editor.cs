@@ -49,6 +49,8 @@ namespace Bzaar
         private void Update()
         {
             SetMode();
+
+            
         }
 
 

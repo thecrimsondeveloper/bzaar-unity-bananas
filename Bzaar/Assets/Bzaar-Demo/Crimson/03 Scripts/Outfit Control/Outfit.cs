@@ -60,33 +60,42 @@ namespace Bzaar
             }
         }
 
-
+        public void DeselectObject()
+        {
+            foreach(Outline outline in FindObjectsOfType<Outline>())
+            {
+                outline.enabled = false;
+                selectedObject = null;
+            }
+        }
+        public void SelObj(GameObject obj)
+        {
+            selectedObject = obj;
+            selectedObject.GetComponentInParent<Outline>().enabled = true;
+            selectedObject.GetComponent<Outline>().enabled = true;
+        }
         void SelectObject()
         {
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Ray ray =  Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit[] hits = Physics.RaycastAll(ray, 100);
 
                 foreach (RaycastHit item in hits)
                 {
                     if (item.collider.tag == "Article" && item.collider.name != "PavilionOld")
                     {
-                        selectedObject = item.collider.gameObject;
-                        selectedObject.GetComponentInParent<Outline>().enabled = true;
-                        selectedObject.GetComponent<Outline>().enabled = true;
+                        SelObj(item.collider.gameObject);
                     }
 
                     if (item.collider.transform.parent &&
                         item.collider.transform.parent.tag == "Article")
                     {
                         if (selectedObject) selectedObject.GetComponentInParent<Outline>().enabled = false;
-
-                        selectedObject = item.collider.transform.parent.gameObject;
-                        selectedObject.GetComponentInParent<Outline>().enabled = true;
-                        selectedObject.GetComponent<Outline>().enabled = true;
+                        SelObj(item.collider.gameObject);
                     }
                 }
+                if(hits.Length == 0){DeselectObject();}
             }
         }
 
