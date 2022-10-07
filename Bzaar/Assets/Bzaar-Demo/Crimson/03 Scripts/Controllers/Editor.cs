@@ -2,6 +2,7 @@ using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 namespace Bzaar
 {
@@ -25,6 +26,8 @@ namespace Bzaar
         
         [Header("Data")]
         public Visuals clothingVisuals;
+        public Color modelOutlineColor;
+        public float modelOutlineWidth;
         
         public EditorMode mode;
 
@@ -44,12 +47,22 @@ namespace Bzaar
         {
             App.instance.loadingScreen.StartLoading();
             App.instance.UI.SetupTexturePanel();
+            StartCoroutine(WaitStart());
+        }
+
+        IEnumerator WaitStart()
+        {
+            App.instance.loadingScreen.StartLoading();
+            yield return new WaitForSeconds(5);
+           
+            App.instance.loadingScreen.StopLoading();
+            App.instance.UI.ResetUIView();
         }
 
         private void Update()
         {
             SetMode();
-
+        
             
         }
 

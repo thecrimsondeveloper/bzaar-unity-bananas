@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using System.Net;
 using System;
 using UnityEngine.Networking;
+using System.Threading.Tasks;
 
 namespace Bzaar
 {
@@ -28,25 +29,24 @@ namespace Bzaar
 
         private GameObject spawnedArticle = null;
       
-        public void SpawnArticle()
+        public async void SpawnArticle()
         {
+            App.instance.UI.ResetUIView();
+
             if (spawnedArticle != null) return;
 
       
             GameObject GLTFEchoObj = App.instance.Echo3D_Manager.SpawnEchoAsset(clothingEntry, this);
+
             GLTFEchoObj.transform.parent = Editor.instance.outfit.meshParent.transform;
-           
 
-            StartCoroutine(SpawnArticle_Routine());
-        }
+            while (spawnedArticle == null)
+            {
+                await Task.Delay(500);    
+            }
 
-
-        
-        IEnumerator SpawnArticle_Routine()
-        {
-            yield return new WaitUntil(() => spawnedArticle != null);
             spawnedArticle.tag = "Article";
-            
+
             //SET THE PARENT
             if (spawnType == ClothingType.top)
             {
@@ -58,27 +58,25 @@ namespace Bzaar
                 spawnedArticle.transform.parent = Editor.instance.outfit.bottom.transform;
                 Editor.instance.outfit.spawnedBottom = spawnedArticle;
             }
+            spawnedArticle.GetComponent<MeshRenderer>().material = defaultMaterial;
+            spawnedArticle.AddComponent<MeshCollider>();
+
+            Outline outline = spawnedArticle.AddComponent<Outline>();
+            outline.OutlineColor = Editor.instance.modelOutlineColor;
+            outline.OutlineMode = Outline.Mode.OutlineAndSilhouette;
+            outline.OutlineWidth = Editor.instance.modelOutlineWidth;
+            outline.enabled = false;
 
             spawnedArticle.transform.localScale = Vector3.one;
             spawnedArticle.transform.localPosition = Vector3.zero;
             spawnedArticle.transform.localRotation = Quaternion.identity;
 
-            yield return new WaitForEndOfFrame();
-            spawnedArticle.GetComponent<MeshRenderer>().material = defaultMaterial;
+            GLTFEchoObj.transform.parent = spawnedArticle.transform;
 
-            spawnedArticle.AddComponent<MeshCollider>();
-
-            Outline outline = spawnedArticle.AddComponent<Outline>();
-            outline.OutlineColor = Color.black;
-            outline.OutlineMode = Outline.Mode.OutlineAndSilhouette;
-            outline.OutlineWidth = 5;
-            outline.enabled = false;
-
-            
             spawnedArticle = null;
-
-            App.instance.UI.ResetUIView();
         }
+
+       
 
         public void SetSpawnedArticle(GameObject obj)
         {

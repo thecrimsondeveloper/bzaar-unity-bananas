@@ -24,8 +24,7 @@ namespace Bzaar{
 
         [SerializeField] AppState state = AppState.None;
         public UnityEvent onAppStateChange;
-        public int touchCountLastFrame = 0;
-        public Vector3 lastMousePosition;
+
 
         private void Awake()
         {
@@ -38,12 +37,7 @@ namespace Bzaar{
                 instance = this;
             }
         }
-        private void LateUpdate() 
-        {
-             touchCountLastFrame = Input.touchCount;
-            lastMousePosition = Input.touchCount > 0 ? Input.mousePosition : Vector3.zero;
-
-        }
+        
         async void Start()
         {
             await Task.Delay(500);

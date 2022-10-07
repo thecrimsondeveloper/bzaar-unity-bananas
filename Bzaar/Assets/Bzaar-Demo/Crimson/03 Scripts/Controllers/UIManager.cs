@@ -45,6 +45,7 @@ namespace Bzaar
         [SerializeField] Button propertiesBt;
         [SerializeField] Button takePhotoBtn;
         [SerializeField] Button recordBtn;
+        [SerializeField] Button DeleteModelBtn;
 
         [Header("Prefabs")]
         [SerializeField] GameObject spawnClothingBtnPrefab;
@@ -58,6 +59,10 @@ namespace Bzaar
         private void Start()
         {
             RefreshOutFitSelections();
+        }
+        private void Update()
+        {
+            DeleteModelBtn.gameObject.SetActive(Editor.instance.outfit.selectedObject != null); ;
         }
 
         public void SetupTopsPanel()
@@ -79,6 +84,8 @@ namespace Bzaar
 
                 go.transform.localScale = Vector3.one;
             }
+
+            App.instance.UI.ResetUIView();
         }
 
         public void ClearUIView()

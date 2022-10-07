@@ -44,7 +44,7 @@ public class Echo : MonoBehaviour
 
             //Spawn in the GLTF SPAWNER
             string URL = $"https://api.echo3D.co/query?key={API_KEY}&secKey={SECURITY_KEY}&src=UnitySDK&entries={entryID}&file={value}";
-            GameObject obj = Instantiate(EchoGLTFPrefab, Vector3.zero, Quaternion.identity);
+            GameObject obj = Instantiate(EchoGLTFPrefab, Vector3.up * 1000, Quaternion.identity);
             obj.GetComponent<GltfAsset>().url = URL;
 
             //Wait for the object to spawn in and then get a reference to it.
