@@ -23,9 +23,11 @@ namespace Bzaar
 
         public Entry clothingEntry;
         public ClothingType spawnType;
-        [SerializeField] TMP_Text btnText;
+        public TMP_Text btnText;
         [SerializeField] Image btnImage;
         [SerializeField] Material defaultMaterial;
+
+        
 
         private GameObject spawnedArticle = null;
       
@@ -80,48 +82,51 @@ namespace Bzaar
 
         public void SetSpawnedArticle(GameObject obj)
         {
+            
             spawnedArticle = obj;
         }
 
-        public void SetupButton(Entry entry)
-        {
-
-            //btnText.text = entry.getId();// text;
-            StartCoroutine(LateButtonSetup());
-        }
-
-        IEnumerator LateButtonSetup()
+        public async void SetupButton(Entry entry, string imgVal)
         { 
-            yield return new WaitForEndOfFrame();
-            if (clothingEntry.getAdditionalData().TryGetValue("screenShotStorageID", out string screenShotVal))
+            await TaskHelper.WaitFrame();
+            
+            if (imgVal != null)//clothingEntry.getAdditionalData().TryGetValue("screenShotStorageID", out string screenShotVal))
             {
-                string downloadLink = $"https://api.echo3d.co/query?key={Echo.API_KEY}&file={screenShotVal}";
-                using (UnityWebRequest webRequest = UnityWebRequest.Get(downloadLink))
+                string downloadLink = "https://api.echo3d.co/query?key="+Echo.API_KEY+"&file="+imgVal;
+                using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(downloadLink))
                 {
                     // Request and wait for the desired page.
-                    yield return webRequest.SendWebRequest();
+                    
+                    await Task.Yield();
+                    webRequest.SendWebRequest();
 
+                    while (webRequest.result == UnityWebRequest.Result.InProgress)
+                    {
+                        await Task.Delay(100);
+                    }
                     string[] pages = downloadLink.Split('/');
                     int page = pages.Length - 1;
 
-                    switch (webRequest.result)
+
+                    if (webRequest.result == UnityWebRequest.Result.Success)
                     {
-                        case UnityWebRequest.Result.ConnectionError:
-                        case UnityWebRequest.Result.DataProcessingError:
-                            Debug.LogError(pages[page] + ": Error: " + webRequest.error);
-                            break;
-                        case UnityWebRequest.Result.ProtocolError:
-                            Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
-                            break;
-                        case UnityWebRequest.Result.Success:
-                            Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
-                            break;
+                        Texture2D webTexture = ((DownloadHandlerTexture)webRequest.downloadHandler).texture as Texture2D;
+                        Sprite sprite = Sprite.Create(webTexture, new Rect(0.0f, 0.0f, webTexture.width, webTexture.height), new Vector2(0.5f, 0.5f));
+                        btnImage.sprite = sprite;
+                    }
+                    else
+                    {
+                        throw new Exception("Error retrieving button image: " + webRequest.error);
                     }
                 }
             }
-            // App.instance.previewManager.AddPreviewButtonInfo(clothingEntry,btnImage);
-
+            else
+            {
+                btnText.text = "Button Image not found.";
+            }
         }
+
+       
     }
 
 }

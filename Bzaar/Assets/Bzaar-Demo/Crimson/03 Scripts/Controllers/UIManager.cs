@@ -163,10 +163,18 @@ namespace Bzaar
                 obj.transform.localScale = Vector3.one;
                 if (!obj.GetComponent<SpawnClothingBtn>()) continue;
                 
-                    obj.GetComponent<SpawnClothingBtn>().clothingEntry = entry;
-                    obj.GetComponent<SpawnClothingBtn>().spawnType = cloType;
-                    obj.GetComponent<SpawnClothingBtn>().SetupButton(entry);
-                
+                obj.GetComponent<SpawnClothingBtn>().clothingEntry = entry;
+                obj.GetComponent<SpawnClothingBtn>().spawnType = cloType;
+
+                string imageVal = entry.getAdditionalData().TryGetValue("screenshotStorageID", out string value) ? value : null;
+                string fileName = entry.getAdditionalData().TryGetValue("screenshotStorageFilename", out string fileNameVal) ? fileNameVal.Split('.')[0] : null;
+                obj.GetComponent<SpawnClothingBtn>().btnText.text = fileName.Substring(0,Mathf.Clamp(fileName.Length,0,8));
+                obj.GetComponent<SpawnClothingBtn>().SetupButton(entry, imageVal);
+
+                Debug.Log(fileName);
+                Debug.Log(imageVal);
+               
+ 
             }
         }
 

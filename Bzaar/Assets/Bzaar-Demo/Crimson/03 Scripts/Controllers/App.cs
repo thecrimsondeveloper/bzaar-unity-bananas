@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Threading.Tasks;
 
-namespace Bzaar{
+namespace Bzaar {
     public enum AppState
     {
         None,
@@ -37,11 +37,11 @@ namespace Bzaar{
                 instance = this;
             }
         }
-        
+
         async void Start()
         {
             await Task.Delay(500);
-            SetState(AppState.Closet);    
+            SetState(AppState.Closet);
         }
         public void SetState(AppState newState)
         {
@@ -51,6 +51,21 @@ namespace Bzaar{
         public bool IsState(AppState testState)
         {
             return state == testState;
+        }
+    }
+
+
+
+
+    public static class TaskHelper
+    {
+        public static async Task WaitFrame()
+        {
+            int current = Time.frameCount;
+            while (current == Time.frameCount)
+            {
+                await Task.Yield();
+            }
         }
     }
 }
