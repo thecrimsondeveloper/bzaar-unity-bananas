@@ -45,6 +45,7 @@ namespace Bzaar
         [SerializeField] Button propertiesBt;
         [SerializeField] Button takePhotoBtn;
         [SerializeField] Button recordBtn;
+        [SerializeField] Button DeleteModelBtn;
 
         [Header("Prefabs")]
         [SerializeField] GameObject spawnClothingBtnPrefab;
@@ -59,6 +60,10 @@ namespace Bzaar
         {
             RefreshOutFitSelections();
         }
+        private void Update()
+        {
+            DeleteModelBtn.gameObject.SetActive(Editor.instance.outfit.selectedObject != null); ;
+        }
 
         public void SetupTopsPanel()
         {
@@ -67,7 +72,7 @@ namespace Bzaar
 
         public void SetupTexturePanel()
         {
-            foreach (Sprite spr in App.instance.clothingVisuals.textures)
+            foreach (Sprite spr in Editor.instance.clothingVisuals.textures)
             {
                 GameObject go = Instantiate(textureSelectPrefab);
                 if (go.TryGetComponent(out UnityEngine.UI.Image img))
@@ -79,6 +84,8 @@ namespace Bzaar
 
                 go.transform.localScale = Vector3.one;
             }
+
+            
         }
 
         public void ClearUIView()
@@ -113,10 +120,10 @@ namespace Bzaar
        
         public void SetUIMode()
         {
-            outfitModePanel.SetActive(App.instance.mode == Mode.outfit);
-            materialModePanel.SetActive(App.instance.mode == Mode.texture);
-            sculptModePanel.SetActive(App.instance.mode == Mode.sculpt);
-            renderModePanel.SetActive(App.instance.mode == Mode.render);
+            outfitModePanel.SetActive(Editor.instance.mode == EditorMode.outfit);
+            materialModePanel.SetActive(Editor.instance.mode == EditorMode.texture);
+            sculptModePanel.SetActive(Editor.instance.mode == EditorMode.sculpt);
+            renderModePanel.SetActive(Editor.instance.mode == EditorMode.render);
         }
 
 
@@ -249,12 +256,12 @@ namespace Bzaar
         public void SpawnAvatar(int index)
         {
             ToggleFocussedUI(avatarBtn, avatarsPanel);
-            App.instance.Avatars.SpawnAvatar(index);
+            Editor.instance.Avatars.SpawnAvatar(index);
         }
 
         public void SaveCurrentOutfit()
         {
-            App.instance.SaveManager.SaveOutfit(App.instance.outfit.SaveCurrentOutfit());
+            App.instance.saveManager.SaveOutfit(Editor.instance.outfit.SaveCurrentOutfit());
         }
 
         #endregion

@@ -7,6 +7,8 @@ using UnityEngine.UIElements;
 using UnityEngine.UI;
 
 using UnityEngine.Rendering;
+using System.Linq;
+using Sirenix.OdinInspector;
 
 namespace Bzaar
 {
@@ -51,7 +53,8 @@ namespace Bzaar
 
         private void Update()
         {
-            SelectObject();
+            TrySelectObjects();
+            TryDeselectObject();
             CalculateRotation();
 
             if (Input.GetKey(KeyCode.Alpha0))
@@ -60,43 +63,74 @@ namespace Bzaar
             }
         }
 
+        public void TryDeselectObject()
+        {
+            if (selectedObject == null) return;
+            if (!TouchController.instance.TapReleased) return;
+            Camera editorCam = GameObject.FindGameObjectWithTag("Editor Camera").GetComponent<Camera>();
+            Ray ray = editorCam.ScreenPointToRay(TouchController.instance.LastMousePosition);
+            RaycastHit[] hits = Physics.RaycastAll(ray, 100);
+            //Go through each hit
+            bool foundOutline = false;
+            foreach (var item in hits)
+            {
+                if (item.collider.GetComponent<Outline>())
+                {
+                    foundOutline = true;
+                }   
+            }
 
-        void SelectObject()
+            if (hits.Length == 0 || !foundOutline) DeselectObject();
+
+        }
+
+        public void DeselectObject()
+        {
+            foreach (Outline outlineObj in FindObjectsOfType<Outline>())
+            {
+                selectedObject = null;
+                outlineObj.enabled = false;
+            }
+        }
+        public void SelectObject(GameObject obj)
+        {
+            Debug.Log("SELEEEEEECTR ");
+            if (selectedObject) selectedObject.GetComponentInParent<Outline>().enabled = false;
+
+            selectedObject = obj;
+            selectedObject.GetComponentInParent<Outline>().enabled = true;
+            selectedObject.GetComponent<Outline>().enabled = true;
+        }
+
+        
+
+        public void TrySelectObjects()
         {
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Camera editorCam = GameObject.FindGameObjectWithTag("Editor Camera").GetComponent<Camera>();
+                Ray ray =  editorCam.ScreenPointToRay(Input.mousePosition);
                 RaycastHit[] hits = Physics.RaycastAll(ray, 100);
-
                 foreach (RaycastHit item in hits)
                 {
-                    if (item.collider.tag == "Article" && item.collider.name != "PavilionOld")
+                    Debug.Log(item.collider.name);
+                    Transform[] objs = item.collider.GetComponentsInChildren<Transform>();
+                    objs = objs.Where(child => child.tag == "Article").ToArray();
+                    foreach (Transform obj in objs)
                     {
-                        selectedObject = item.collider.gameObject;
-                        selectedObject.GetComponentInParent<Outline>().enabled = true;
-                        selectedObject.GetComponent<Outline>().enabled = true;
+                        SelectObject(obj.gameObject);
                     }
-
-                    if (item.collider.transform.parent &&
-                        item.collider.transform.parent.tag == "Article")
-                    {
-                        if (selectedObject) selectedObject.GetComponentInParent<Outline>().enabled = false;
-
-                        selectedObject = item.collider.transform.parent.gameObject;
-                        selectedObject.GetComponentInParent<Outline>().enabled = true;
-                        selectedObject.GetComponent<Outline>().enabled = true;
-                    }
-                }
+                }   
             }
         }
 
         void CalculateRotation()
         {
-            if(App.instance.touchCountLastFrame > 1)            return;
-            if(App.instance.lastMousePosition == Vector3.zero)  return;
+            if(TouchController.instance.TouchCountLastFrame > 1)            return;
+            if(TouchController.instance.LastMousePosition == Vector3.zero)  return;
             if(Input.touchCount != 1)                           return;
 
-            float yChange = App.instance.lastMousePosition.x - Input.mousePosition.x;
+            float yChange = TouchController.instance.LastMousePosition.x - Input.mousePosition.x;
             transform.Rotate(Vector3.up * rotationSensititivity * Time.deltaTime * yChange);
         }
 
@@ -152,5 +186,13 @@ namespace Bzaar
             return save;
         }
 
+        [Button]
+        public void DeleteSelectedItem()
+        {
+            if (selectedObject == null) return;
+            Destroy(selectedObject);
+        }
+
+        
     }
 }

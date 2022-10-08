@@ -30,7 +30,7 @@ namespace Bzaar
                 photoCapture.CapturePreview(info.Item1,info.Item2);
             }
 
-            App.instance.SetStartEditorState();
+            Editor.instance.SetStartEditorState();
         }
 
 

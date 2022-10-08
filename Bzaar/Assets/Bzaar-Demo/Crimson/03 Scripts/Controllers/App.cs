@@ -1,36 +1,30 @@
-using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using System.Threading.Tasks;
 
-namespace Bzaar
-{
-    public enum Mode
+namespace Bzaar{
+    public enum AppState
     {
-        outfit,
-        texture,
-        sculpt,
-        render
+        None,
+        Closet,
+        Editor
     }
+
 
     public class App : MonoBehaviour
     {
         public static App instance;
 
         public UIManager UI;
-        public PreviewManager previewManager;
-        public Outfit outfit;
+        public SaveManager saveManager;
         public LoadingScreen loadingScreen;
-        public AvatarDisplaying Avatars;
         public Echo Echo3D_Manager;
-        public SaveManager SaveManager;
 
-        public Visuals clothingVisuals;
+        [SerializeField] AppState state = AppState.None;
+        public UnityEvent onAppStateChange;
 
-        public int touchCountLastFrame = 0;
-        public Vector3 lastMousePosition;
-
-        public Mode mode;
 
         private void Awake()
         {
@@ -43,41 +37,20 @@ namespace Bzaar
                 instance = this;
             }
         }
-
-        void Start()
+        
+        async void Start()
         {
-            loadingScreen.StartLoading();
-            UI.SetupTexturePanel();
+            await Task.Delay(500);
+            SetState(AppState.Closet);    
         }
-
-        private void Update()
+        public void SetState(AppState newState)
         {
-            SetMode();
+            state = newState;
+            onAppStateChange.Invoke();
         }
-
-        private void LateUpdate()
+        public bool IsState(AppState testState)
         {
-            touchCountLastFrame = Input.touchCount;
-            lastMousePosition = Input.touchCount > 0 ? Input.mousePosition : Vector3.zero;
-        }
-
-        public void SetMode()
-        {
-            mode = (Mode)UI.modeDropdown.currentlySelectedIndex;
-            UI.SetUIMode();
-        }
-
-        public void SetStartEditorState()
-        {
-            UI.SetUIMode();
-            StartCoroutine(SetStartState_Coroutine());
-        }
-
-        IEnumerator SetStartState_Coroutine()
-        {
-            yield return new WaitForSeconds(0.25f);
-            App.instance.UI.ResetUIView();
-            loadingScreen.StopLoading();
+            return state == testState;
         }
     }
 }

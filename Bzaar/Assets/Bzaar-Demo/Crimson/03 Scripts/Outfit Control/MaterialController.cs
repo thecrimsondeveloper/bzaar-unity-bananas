@@ -28,7 +28,7 @@ namespace Bzaar {
 
         public void SetSelectedObjColor(Color color)
         {
-            if (!App.instance.outfit.selectedObject) return;
+            if (!Editor.instance.outfit.selectedObject) return;
             SetObjColor(color);
         }
 

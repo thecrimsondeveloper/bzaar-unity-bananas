@@ -9,7 +9,7 @@ namespace Bzaar
         public void SetMaterial()
         {
             Sprite texture = gameObject.GetComponent<UnityEngine.UI.Image>().sprite;
-            App.instance.outfit.materialController.SetObjSkin(texture);
+            Editor.instance.outfit.materialController.SetObjSkin(texture);
         }
     }
 }
