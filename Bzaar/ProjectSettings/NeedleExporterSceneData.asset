@@ -16,4 +16,15 @@ MonoBehaviour:
   - Path: Assets/NeedleTest.unity
     Projects: []
     BuilderScene: 
-  Projects: []
+  - Path: Assets/Bzaar-Demo/Crimson/01 Scenes/Main Scene.unity
+    Projects: []
+    BuilderScene: 
+  - Path: Assets/CollaborativeSandbox.unity
+    Projects: []
+    BuilderScene: 
+  - Path: Assets/Bzaar-Demo/Crimson/01 Scenes/TestNeedleScene.unity
+    Projects:
+    - ProjectPath: Projects/TestNeedleScene
+    BuilderScene: 
+  Projects:
+  - ProjectPath: Projects/TestNeedleScene
