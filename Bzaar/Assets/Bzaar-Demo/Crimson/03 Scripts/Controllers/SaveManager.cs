@@ -30,24 +30,22 @@ public class SaveManager : MonoBehaviour
         if (Input.GetKey(KeyCode.Alpha1))
         {
             test = GetOutfit("23FA3-89C477-C5B143-2DD6DD-65A2F4");
-
+            
         }
     }
     public void SaveOutfit(OutfitSave save)
     {
+        save.key = "Unset";
         
-        if (save.key == "Unset")
-        {
-            save.key = GenerateSaveString();
-        }
-
         string saveString = JsonUtility.ToJson(save);
-
-        Debug.Log(saveString);
+        string hash = Hash128.Compute(saveString).ToString();
+        save.key =hash.ToString();
+        Debug.Log(hash);
+        
         PlayerPrefs.SetString(save.key, saveString);
 
         using (StreamWriter writer = new StreamWriter("Assets/Resources/outfitHashes.txt",true))
-        {
+        { 
             writer.WriteLine(save.key);
         }
     }
@@ -76,22 +74,7 @@ public class SaveManager : MonoBehaviour
     }
 
 
-    string GenerateSaveString()
-    {
-        string outStr = "";
-
-        for (int i = 0; i < 5; i++)
-        { 
-            if(i == 0) outStr += $"{GetRandomSavePArtition()}";
-            else outStr += $"-{GetRandomSavePArtition()}";
-        }
-
-        return outStr;
-    }
-    string GetRandomSavePArtition()
-    {
-        return UnityEngine.Random.Range(0, 16777215).ToString("X");
-    }
+   
 }
 
 

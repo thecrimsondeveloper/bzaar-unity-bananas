@@ -254,7 +254,7 @@ namespace Bzaar
 
         public void TakePhotoBtnClicked()
         {
-
+                
         }
         public void RecordVideoBtnClicked()
         {

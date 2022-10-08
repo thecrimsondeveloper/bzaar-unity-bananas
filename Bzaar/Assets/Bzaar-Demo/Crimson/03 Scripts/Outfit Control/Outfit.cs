@@ -170,7 +170,7 @@ namespace Bzaar
             ArticleSave article = new ArticleSave();
             article.entry = new Entry();
             article.color = articleObj.GetComponent<MeshRenderer>().material.color;
-            article.textureName = articleObj.GetComponent<MeshRenderer>().material.mainTexture.name;
+            //article.textureName = articleObj.GetComponent<MeshRenderer>().material.mainTexture.name;
 
 
             return article;
