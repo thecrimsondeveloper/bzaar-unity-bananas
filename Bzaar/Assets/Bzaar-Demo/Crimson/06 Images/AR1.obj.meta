@@ -1,54 +1,9 @@
 fileFormatVersion: 2
-guid: 71a4ab53c54882a4897fa2abf1ec24af
+guid: be24cdb3f4296fd4ab2eaca16f26a9da
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: bodyMat
-    second: {fileID: 2100000, guid: 048bbb0f803d67946869021cf3f6f8ba, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: eye_LMat
-    second: {fileID: 2100000, guid: 9f3695c9c7c276e4dab29812d5911894, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: eye_RMat
-    second: {fileID: 2100000, guid: 662b0ff9d74bd53448a536a9b9aa5568, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: eyelash_LMat
-    second: {fileID: 2100000, guid: a52beaa142ad3b34ab0d6b389f4a5f04, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: eyelash_RMat
-    second: {fileID: 2100000, guid: fa42b52f0d88e0745adaeb52ed5acbe7, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: hair_ShapeMat
-    second: {fileID: 2100000, guid: 4144c7d54d31ed641b620e125cac88dc, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shoes_l_ShapeMat
-    second: {fileID: 2100000, guid: 9f1d126c9bb1c624187f8cd46e18409b, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shoes_r_ShapeMat
-    second: {fileID: 2100000, guid: 860a4574c1c325d45a9a91bfc5d62a1f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: tooth_Mat
-    second: {fileID: 2100000, guid: 2ad8a0c9a109fc547a1381945453a8aa, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

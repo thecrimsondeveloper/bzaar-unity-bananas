@@ -11,7 +11,7 @@ public class TouchController : MonoBehaviour
     [Header("Gesture Attributes")]
     [SerializeField] float holdTouchDuration = 0.1f;
 
-    
+
     [Header("Debugging")]
     [SerializeField] bool displayInspectorData = false;
 
@@ -47,10 +47,9 @@ public class TouchController : MonoBehaviour
         Input.simulateMouseWithTouches = true;
     }
 
-    
+
     private void Update()
     {
-        Debug.Log(Input.touchCount);
         if (Input.touchCount == 0 && touchCountLastFrame > 0)
         {
             holdReleased = MouseHolding;
@@ -63,9 +62,6 @@ public class TouchController : MonoBehaviour
             holdReleased = false;
             tapReleased = false;
         }
-        if (holdReleased) Debug.Log("Hold Released");
-        if (tapReleased) Debug.Log("Tap Released");
-
     }
     private void LateUpdate()
     {
@@ -76,7 +72,7 @@ public class TouchController : MonoBehaviour
 
     void TouchReleased()
     {
-            
+
     }
 
 

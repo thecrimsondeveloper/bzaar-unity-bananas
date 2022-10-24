@@ -8,6 +8,7 @@ using System.Net;
 using System;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
+using Crimson;
 
 namespace Bzaar
 {
@@ -27,24 +28,24 @@ namespace Bzaar
         [SerializeField] Image btnImage;
         [SerializeField] Material defaultMaterial;
 
-        
+
 
         private GameObject spawnedArticle = null;
-      
+
         public async void SpawnArticle()
         {
             App.instance.UI.ResetUIView();
 
             if (spawnedArticle != null) return;
 
-      
+
             GameObject GLTFEchoObj = App.instance.Echo3D_Manager.SpawnEchoAsset(clothingEntry, this);
 
             GLTFEchoObj.transform.parent = Editor.instance.outfit.meshParent.transform;
 
             while (spawnedArticle == null)
             {
-                await Task.Delay(500);    
+                await Task.Delay(500);
             }
 
             spawnedArticle.tag = "Article";
@@ -78,25 +79,25 @@ namespace Bzaar
             spawnedArticle = null;
         }
 
-       
+
 
         public void SetSpawnedArticle(GameObject obj)
         {
-            
+
             spawnedArticle = obj;
         }
 
         public async void SetupButton(Entry entry, string imgVal)
-        { 
+        {
             await TaskHelper.WaitFrame();
-            
+
             if (imgVal != null)//clothingEntry.getAdditionalData().TryGetValue("screenShotStorageID", out string screenShotVal))
             {
-                string downloadLink = "https://api.echo3d.co/query?key="+Echo.API_KEY+"&file="+imgVal;
+                string downloadLink = "https://api.echo3d.co/query?key=" + Echo.API_KEY + "&file=" + imgVal;
                 using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(downloadLink))
                 {
                     // Request and wait for the desired page.
-                    
+
                     await Task.Yield();
                     webRequest.SendWebRequest();
 
@@ -126,7 +127,7 @@ namespace Bzaar
             }
         }
 
-       
+
     }
 
 }

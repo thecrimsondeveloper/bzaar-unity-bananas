@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Threading.Tasks;
+using Crimson;
 
-namespace Bzaar {
+namespace Bzaar
+{
     public enum AppState
     {
         None,
@@ -52,20 +54,13 @@ namespace Bzaar {
         {
             return state == testState;
         }
-    }
 
 
 
 
-    public static class TaskHelper
-    {
-        public static async Task WaitFrame()
+        public void ActiveRotation()
         {
-            int current = Time.frameCount;
-            while (current == Time.frameCount)
-            {
-                await Task.Yield();
-            }
+            FindObjectOfType<RotateGizmo>()?.gameObject.SetActive(true);
         }
     }
 }
