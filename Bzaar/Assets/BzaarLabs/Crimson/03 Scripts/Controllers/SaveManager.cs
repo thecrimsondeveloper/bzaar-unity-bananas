@@ -5,83 +5,51 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 using System;
+using System.Threading.Tasks;
 
 public class SaveManager : MonoBehaviour
 {
-    public Dictionary<string, string> saves = new Dictionary<string, string>();
-
-    public OutfitSave test = new OutfitSave();
-
-    private void Start()
-    {
-        if (!File.Exists("Assets/Resources/outfitHashes.txt")) { PlayerPrefs.DeleteAll(); }
-
-        //for(int i = 0; i < 10; i++)
-        //{
-        //    SaveOutfit();
-        //}
-        //GetAllSaves();
-        PopulateSaveDictionary();
-    }
-
-
     private void Update()
     {
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            test = GetOutfit("23FA3-89C477-C5B143-2DD6DD-65A2F4");
-            
+            SaveOutfit(GetDebugSave());
         }
     }
     public void SaveOutfit(OutfitSave save)
     {
-        save.key = "Unset";
         
         string saveString = JsonUtility.ToJson(save);
         string hash = Hash128.Compute(saveString).ToString();
-        save.key =hash.ToString();
         Debug.Log(hash);
-        
-        PlayerPrefs.SetString(save.key, saveString);
-
-        using (StreamWriter writer = new StreamWriter("Assets/Resources/outfitHashes.txt",true))
-        { 
-            writer.WriteLine(save.key);
-        }
+        Debug.Log(saveString);
     }
 
-    public void PopulateSaveDictionary()
-    {
-        
-        using (StreamReader reader = new StreamReader("Assets/Resources/outfitHashes.txt"))
-        {
-            string line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                line = line.Trim();
-                saves.Add(line, PlayerPrefs.GetString(line));
-            }
-        }
-    }
 
     public OutfitSave GetOutfit(string hash)
     {
-        if (saves.TryGetValue(hash, out string outfitJson))
-        { 
-            return JsonUtility.FromJson<OutfitSave>(outfitJson);
-        }
-        return null;
+        //will need to eventually async fetch the data from firebase.
+        string saveJSON = BzaarToFirebase.GetSaveFromHash(hash);
+        OutfitSave savedOutfit = JsonUtility.FromJson<OutfitSave>(saveJSON);
+        return savedOutfit;
     }
 
+    public OutfitSave GetDebugSave()
+    {
+        OutfitSave test = new();
+        test.outfitName = "TESTING NAME";
+        test.bottomEntry = new();
+        test.topEntry = new();
 
-   
+
+        return test;
+    }
 }
 
 
 [System.Serializable]
 public class OutfitSave
 {
-    public string key = "Unset";
     public string outfitName;
     public ArticleSave topEntry;
     public ArticleSave bottomEntry;
@@ -91,10 +59,32 @@ public class OutfitSave
 public class ArticleSave 
 {
     public Entry entry;
-    
     public Color color;
     public string textureName;
     public float opacity;
     public float reflectivity;
     public float luminosity;
+}
+
+public static class BzaarToFirebase
+{
+    public static void Save()
+    {
+
+    }
+
+    public async static Task<string> TryGetSaveFromHash(string hash)
+    {
+
+        //await for the data fetch
+        await Task.Delay(1000);
+        return hash;
+    }
+
+    public static string GetSaveFromHash(string hash)
+    {
+
+        return hash;
+    }
+
 }

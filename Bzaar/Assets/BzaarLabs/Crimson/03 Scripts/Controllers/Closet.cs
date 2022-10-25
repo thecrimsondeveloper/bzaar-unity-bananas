@@ -22,7 +22,8 @@ namespace Bzaar
         
         [Header("Data")]
         public Visuals clothingVisuals;
-        
+
+        [SerializeField] GameObject closetItemBtnPrefab;
 
         private void Awake()
         {
@@ -47,8 +48,36 @@ namespace Bzaar
             }
             if(App.instance.IsState(AppState.Closet))
             {
-                
+                ClosetParent.SetActive(true);   
             }
+        }
+
+
+
+
+
+        public async void GetClosetItems()
+        {
+            //get hashes associated with account
+            List<string> hashes = new();
+            foreach (var hash in hashes)
+            {
+                OutfitSave saveObj = new();
+                //await App.instance.saveManager.GetOutfit(hash);
+
+                SetupClosetItem(saveObj);
+            }
+        }
+
+        private void SetupClosetItem(OutfitSave save)
+        {
+            Transform parent = null;
+            GameObject outfitBtn = Instantiate(closetItemBtnPrefab, Vector3.zero, Quaternion.identity, parent);
+            //if (outfitBtn.TryGetComponent(out ClosetButton button))
+            //{
+
+
+            //}
         }
     }
 }
