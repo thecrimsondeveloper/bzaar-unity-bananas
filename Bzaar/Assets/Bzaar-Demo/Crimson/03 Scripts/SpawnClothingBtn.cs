@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using DG.Tweening;
 
 namespace Bzaar
 {
@@ -14,6 +15,7 @@ namespace Bzaar
         bottom
     }
 
+   
     public class SpawnClothingBtn : MonoBehaviour
     {
 
@@ -23,7 +25,19 @@ namespace Bzaar
         [SerializeField] Image btnImage;
         [SerializeField] Material defaultMaterial;
 
+        private void OnEnable()
+        {
+            SpawnAnimation();
+        }
 
+        private void OnDisable()
+        {
+            transform.localScale = Vector3.zero;
+        }
+        public void SpawnAnimation()
+        {
+            transform.DOScale(1, 1f).SetEase(Ease.OutBounce); ;
+        }
         public void SpawnArticle()
         {
             GameObject obj = Instantiate(clothingPrefab);
