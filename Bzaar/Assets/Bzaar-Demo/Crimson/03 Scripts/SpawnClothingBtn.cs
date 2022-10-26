@@ -24,18 +24,9 @@ namespace Bzaar
         [SerializeField] TMP_Text btnText;
         [SerializeField] Image btnImage;
         [SerializeField] Material defaultMaterial;
-
-        private void OnEnable()
-        {
-            SpawnAnimation();
-        }
-
-        private void OnDisable()
-        {
-            transform.localScale = Vector3.zero;
-        }
         public void SpawnAnimation()
         {
+            transform.localScale = Vector3.zero;
             transform.DOScale(1, 1f).SetEase(Ease.OutBounce); ;
         }
         public void SpawnArticle()
@@ -82,8 +73,8 @@ namespace Bzaar
             }
 
             Outline outline = obj.AddComponent<Outline>();
-            outline.OutlineColor = Color.black;
-            outline.OutlineMode = Outline.Mode.OutlineAndSilhouette;
+            outline.OutlineColor = Color.cyan;
+            outline.OutlineMode = Outline.Mode.OutlineVisible;
             outline.OutlineWidth = 5;
             outline.enabled = false;
 

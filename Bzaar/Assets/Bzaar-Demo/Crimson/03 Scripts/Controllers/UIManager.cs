@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using System.Threading.Tasks;
 
 using TMPro;
 using Button = UnityEngine.UI.Button;
@@ -229,22 +231,48 @@ namespace Bzaar
         }
 
         #region Button Clicks
-        public void TopsBtnClicked()
+        public async void TopsBtnClicked()
         {
             ToggleFocussedUI(topsBtn,topsPanel);
+            SpawnClothingBtn[] buttons = topsPanel.GetComponentsInChildren<SpawnClothingBtn>();
+            foreach (var item in buttons){ item.transform.localScale = Vector3.zero; }
+
+            foreach (var item in buttons)
+            {
+                await Task.Delay(100);
+                item.SpawnAnimation();
+            }
         }
-        public void BottomsBtnClicked()
+        public async void BottomsBtnClicked()
         {
             ToggleFocussedUI(bottomsBtn, bottomsPanel);
+
+            if (!bottomsPanel.gameObject.activeSelf) return;
+            SpawnClothingBtn[] buttons = bottomsPanel.GetComponentsInChildren<SpawnClothingBtn>();
+            foreach (var item in buttons) { item.transform.localScale = Vector3.zero; }
+
+            foreach (var item in buttons)
+            {
+                await Task.Delay(100);
+                item.SpawnAnimation();
+            }
         }
         public void AvatarBtnClicked()
         {
             ToggleFocussedUI(avatarBtn, avatarsPanel);
         }
 
-        public void TexturesBtnClicked()
+        public async void TexturesBtnClicked()
         {
             ToggleFocussedUI(texturesBtn, texturesPanel);
+            MaterialButton[] buttons = bottomsPanel.GetComponentsInChildren<MaterialButton>();
+            foreach (var item in buttons) { item.transform.localScale = Vector3.zero; }
+
+            foreach (var item in buttons)
+            {
+                await Task.Delay(100);
+                item.SpawnAnimation();
+            }
         }
         public void ColorsBtnClicked()
         {
