@@ -214,6 +214,12 @@ namespace Bzaar
             if (openedPanel == panel) return;
 
             if (selectedBtn is Button) (selectedBtn as Button).GetComponent<Image>().sprite = (selectedBtn as Button).GetComponent<ButtonSprites>().GetSprite(false);
+
+            // List<ButtonManager> buttons = openedPanel.GetComponentsInChildren<ButtonManager>().ToList();
+            // foreach (var btn in buttons)
+            // {
+            //     //btn.transform.DOScale
+            // }
             if (openedPanel) openedPanel.SetActive(false);
             selectedBtn = null;
             openedPanel = null;
@@ -238,9 +244,13 @@ namespace Bzaar
             openedPanel = panel;
         }
 
+
+
         #region Button Clicks
+
         public void TopsBtnClicked()
         {
+
             ClearActiveUI(topsBtn, topsPanel);
             topsPanel.SetActive(!topsPanel.activeSelf);
             openedPanel = topsPanel;
@@ -261,7 +271,6 @@ namespace Bzaar
                 item.transform.localScale = Vector3.zero;
                 item.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InCubic).SetDelay(item.transform.GetSiblingIndex() * 0.05f);
             });
-
         }
         public void BottomsBtnClicked()
         {
