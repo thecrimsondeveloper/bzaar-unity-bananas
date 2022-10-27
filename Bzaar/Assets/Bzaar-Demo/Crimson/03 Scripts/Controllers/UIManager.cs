@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 using TMPro;
 using Button = UnityEngine.UI.Button;
+using Michsky.MUIP;
+using System.Linq;
 
 namespace Bzaar
 {
@@ -27,8 +29,8 @@ namespace Bzaar
         [SerializeField] GameObject outfitModePanel;
         [SerializeField] GameObject sculptModePanel;
         [SerializeField] GameObject renderModePanel;
-    
- 
+
+
         [Header("Grid Panels")]
         [SerializeField] GameObject topsGridPanel;
         [SerializeField] GameObject bottomsGridPanel;
@@ -39,18 +41,18 @@ namespace Bzaar
         [SerializeField] TMP_Text messageText;
 
         [Header("Buttons")]
-        [SerializeField] Button topsBtn;
-        [SerializeField] Button bottomsBtn;
-        [SerializeField] Button avatarBtn;
+        [SerializeField] ButtonManager topsBtn;
+        [SerializeField] ButtonManager bottomsBtn;
+        [SerializeField] ButtonManager avatarBtn;
         [SerializeField] Button texturesBtn;
         [SerializeField] Button colorsBtn;
         [SerializeField] Button propertiesBt;
         [SerializeField] Button takePhotoBtn;
         [SerializeField] Button recordBtn;
 
-        public CustomDropDown modeDropdown;
+        public CustomDropDownV2 modeDropdown;
 
-        [SerializeField] private Button selectedBtn = null;
+        [SerializeField] private Object selectedBtn = null;
         [SerializeField] private GameObject openedPanel = null;
 
         private void Start()
@@ -88,7 +90,7 @@ namespace Bzaar
             colorsPanel.SetActive(false);
             propertiesPanel.SetActive(false);
 
-           
+
             materialModePanel.SetActive(false);
             outfitModePanel.SetActive(false);
             sculptModePanel.SetActive(false);
@@ -100,7 +102,7 @@ namespace Bzaar
         {
             SetUIMode();
             topsPanel.SetActive(false);
-            bottomsPanel.SetActive(false);  
+            bottomsPanel.SetActive(false);
             texturesPanel.SetActive(false);
             avatarsPanel.SetActive(false);
             texturesPanel.SetActive(false);
@@ -108,7 +110,7 @@ namespace Bzaar
             propertiesPanel.SetActive(false);
         }
 
-       
+
         public void SetUIMode()
         {
             outfitModePanel.SetActive(App.instance.mode == Mode.outfit);
@@ -188,7 +190,7 @@ namespace Bzaar
             }
         }
 
-        
+
 
         public void SendMessage(string message, float time = 5)
         {
@@ -206,21 +208,20 @@ namespace Bzaar
             messageText.text = "";
         }
 
-        void ClearActiveUI(Button button, GameObject panel)
+        void ClearActiveUI(Object button, GameObject panel)
         {
-            if (!selectedBtn) return;
-            if (!openedPanel) return;
             if (selectedBtn == button) return;//Clears the selected UI only if the UI is not what was clicked
             if (openedPanel == panel) return;
 
-            selectedBtn.GetComponent<Image>().sprite = selectedBtn.GetComponent<ButtonSprites>().GetSprite(false);
-            openedPanel.SetActive(false); 
+            if (selectedBtn is Button) (selectedBtn as Button).GetComponent<Image>().sprite = (selectedBtn as Button).GetComponent<ButtonSprites>().GetSprite(false);
+            if (openedPanel) openedPanel.SetActive(false);
             selectedBtn = null;
             openedPanel = null;
-            
+
         }
         void ToggleFocussedUI(Button button, GameObject panel)
         {
+
             ClearActiveUI(button, panel);//Clear selected UI
             bool isSelected = !panel.activeSelf;
             panel.SetActive(isSelected);//Toggle tops panel on or off    
@@ -230,49 +231,88 @@ namespace Bzaar
             openedPanel = panel;
         }
 
-        #region Button Clicks
-        public async void TopsBtnClicked()
+        void ToggleFocussedUI(ButtonManager btnMgr, GameObject panel)
         {
-            ToggleFocussedUI(topsBtn,topsPanel);
-            SpawnClothingBtn[] buttons = topsPanel.GetComponentsInChildren<SpawnClothingBtn>();
-            foreach (var item in buttons){ item.transform.localScale = Vector3.zero; }
-
-            foreach (var item in buttons)
-            {
-                await Task.Delay(100);
-                item.SpawnAnimation();
-            }
+            bool isSelected = !panel.activeSelf;
+            panel.SetActive(isSelected);
+            openedPanel = panel;
         }
-        public async void BottomsBtnClicked()
+
+        #region Button Clicks
+        public void TopsBtnClicked()
         {
-            ToggleFocussedUI(bottomsBtn, bottomsPanel);
+            ClearActiveUI(topsBtn, topsPanel);
+            topsPanel.SetActive(!topsPanel.activeSelf);
+            openedPanel = topsPanel;
 
-            if (!bottomsPanel.gameObject.activeSelf) return;
-            SpawnClothingBtn[] buttons = bottomsPanel.GetComponentsInChildren<SpawnClothingBtn>();
-            foreach (var item in buttons) { item.transform.localScale = Vector3.zero; }
+            List<SpawnClothingBtn> buttons = topsPanel.GetComponentsInChildren<SpawnClothingBtn>().ToList();
 
-            foreach (var item in buttons)
+            if (!topsPanel.gameObject.activeSelf)
             {
-                await Task.Delay(100);
-                item.SpawnAnimation();
+                buttons.ForEach(button =>
+                {
+                    button.transform.localScale = Vector3.zero;
+                    button.DOKill();
+                });
+                return;
             }
+            buttons.ForEach(item =>
+            {
+                item.transform.localScale = Vector3.zero;
+                item.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InCubic).SetDelay(item.transform.GetSiblingIndex() * 0.05f);
+            });
+
+        }
+        public void BottomsBtnClicked()
+        {
+            ClearActiveUI(bottomsBtn, bottomsPanel);
+            ToggleFocussedUI(bottomsBtn, bottomsPanel);
+            List<SpawnClothingBtn> buttons = bottomsPanel.GetComponentsInChildren<SpawnClothingBtn>().ToList();
+            Debug.Log("BottomsBtnClicked: " + buttons.Count);
+            if (!bottomsPanel.gameObject.activeSelf)
+            {
+                buttons.ForEach(button =>
+                {
+                    button.transform.localScale = Vector3.zero;
+                    button.DOKill();
+                });
+                return;
+            }
+            buttons.ForEach(item =>
+            {
+                item.transform.localScale = Vector3.zero;
+                item.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InCubic).SetDelay(item.transform.GetSiblingIndex() * 0.05f);
+            });
         }
         public void AvatarBtnClicked()
         {
+            ClearActiveUI(avatarBtn, avatarsPanel);
             ToggleFocussedUI(avatarBtn, avatarsPanel);
+
+            List<ButtonManager> buttons = avatarsPanel.GetComponentsInChildren<ButtonManager>().ToList();
+
+            if (!avatarsPanel.gameObject.activeSelf)
+            {
+                buttons.ForEach(button =>
+                {
+                    button.transform.localScale = Vector3.zero;
+                    button.DOKill();
+                });
+                return;
+            }
+
+            buttons.ForEach(item =>
+            {
+                item.transform.localScale = Vector3.zero;
+                item.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InCubic).SetDelay(item.transform.GetSiblingIndex() * 0.05f);
+            });
+
+
         }
 
-        public async void TexturesBtnClicked()
+        public void TexturesBtnClicked()
         {
             ToggleFocussedUI(texturesBtn, texturesPanel);
-            MaterialButton[] buttons = bottomsPanel.GetComponentsInChildren<MaterialButton>();
-            foreach (var item in buttons) { item.transform.localScale = Vector3.zero; }
-
-            foreach (var item in buttons)
-            {
-                await Task.Delay(100);
-                item.SpawnAnimation();
-            }
         }
         public void ColorsBtnClicked()
         {

@@ -23,8 +23,8 @@ public class LoadingScreen : MonoBehaviour
     {
         startLoadingAnimationPlaying = true;
         LoadingScreenObj.SetActive(true);
-        bzaarLogo.transform.DOScale(1, 1f).SetEase(Ease.OutBounce); ;
-        loadingRing.transform.DOScale(1, 1f).SetEase(Ease.OutBounce).OnComplete(() =>
+        bzaarLogo.transform.DOScale(1, 1f).SetEase(Ease.InOutCubic); ;
+        loadingRing.transform.DOScale(1, 1f).SetEase(Ease.InOutCubic).OnComplete(() =>
         {
             startLoadingAnimationPlaying = false;
         });
@@ -38,15 +38,15 @@ public class LoadingScreen : MonoBehaviour
     IEnumerator StopLoading_Routine()
     {
         yield return new WaitUntil(() => (startLoadingAnimationPlaying == false));
-        yield return new WaitForSeconds(3);
-        bzaarLogo.transform.DOScale(0, 1.25f).SetEase(Ease.OutBounce).OnComplete(()=> {
-            loadingScreenImage.DOColor(new Color(0, 0, 0, 0), 3).OnComplete(() =>
+        yield return new WaitForSeconds(2);
+        float loadingCircleToLogoDelay = 0.25f;
+        bzaarLogo.transform.DOScale(0, 0.25f + loadingCircleToLogoDelay).SetEase(Ease.OutCubic).OnComplete(() =>
+        {
+            loadingScreenImage.DOColor(new Color(0, 0, 0, 0), 1).SetEase(Ease.OutCubic).OnComplete(() =>
             {
                 LoadingScreenObj.SetActive(false);
             });
-        }); 
-
-        yield return new WaitForSeconds(0.25f);
-        loadingRing.transform.DOScale(0, 1f).SetEase(Ease.OutBounce);
+        });
+        loadingRing.transform.DOScale(0, 0.25f).SetEase(Ease.InOutCubic).SetDelay(loadingCircleToLogoDelay);
     }
 }
