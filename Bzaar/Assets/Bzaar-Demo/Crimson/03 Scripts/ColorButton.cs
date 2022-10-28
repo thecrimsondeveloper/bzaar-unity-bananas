@@ -4,12 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-namespace Bzaar {
+namespace Bzaar
+{
 
     public class ColorButton : MonoBehaviour
     {
-        [SerializeField] ColorManager colorManager;
-
         private void Start()
         {
             if (gameObject.TryGetComponent(out Button btn))
@@ -21,7 +20,8 @@ namespace Bzaar {
 
         public void SetColor()
         {
-            colorManager.SetFinalColor(gameObject.GetComponent<Image>().color);
+            Color color = gameObject.GetComponent<Image>().color;
+            App.instance.outfit.materialController.SetSelectedObjColor(color);
         }
     }
 

@@ -28,6 +28,7 @@ namespace Bzaar
         public int currentlySelectedIndex = 0;
         bool isExpanded = false;
 
+
         private void Start()
         {
             Collapse(optionsPanel.GetComponentsInChildren<ButtonManager>().ToList());
@@ -35,24 +36,29 @@ namespace Bzaar
 
         public void RootClicked()
         {
-            List<ButtonManager> buttons = optionsPanel.GetComponentsInChildren<ButtonManager>().ToList();
-            if (isExpanded) Collapse(buttons);
-            else Expand(buttons);
+            if (currentlyExpandingOrCollapsing) return;
+            if (isExpanded) Collapse(optionsList);
+            else Expand(optionsList);
             isExpanded = !isExpanded;
         }
 
+        bool currentlyExpandingOrCollapsing = false;
         void Collapse(List<ButtonManager> buttons)
         {
+            currentlyExpandingOrCollapsing = true;
             buttons.ForEach(b =>
             {
+                b.GetComponent<ButtonManager>().enabled = false;
                 b.transform.DOLocalMove(Vector3.zero, 0.25f).SetEase(Ease.OutCubic).OnComplete(() =>
                 {
                     optionsPanel.SetActive(false);
+                    currentlyExpandingOrCollapsing = false;
                 });
             });
         }
         void Expand(List<ButtonManager> buttons)
         {
+            currentlyExpandingOrCollapsing = true;
             Vector3 collapsDirection = Vector3.down;
 
             if (dropDirection == DropDirection.DOWN) collapsDirection = Vector3.down;
@@ -64,13 +70,24 @@ namespace Bzaar
             {
                 b.transform.localPosition = Vector3.zero;
                 int index = optionsList.IndexOf(b);
-                b.transform.DOLocalMove(Vector3.zero + Vector3.up * (optionsList.Count - index) * 40, 0.25f).SetEase(Ease.OutCubic);
+
+                b.transform.DOLocalMove(Vector3.zero + Vector3.up * (optionsList.Count - index) * 40, 0.25f).
+                                        SetEase(Ease.OutCubic).
+                                        OnComplete(() =>
+                {
+                    currentlyExpandingOrCollapsing = false;
+                });
+
+                b.GetComponent<ButtonManager>().enabled = true;
             });
         }
         public void OptionSelected(int selectedIndex)
         {
-            List<ButtonManager> buttons = optionsPanel.GetComponentsInChildren<ButtonManager>().ToList();
-            Collapse(buttons);
+            buttonRef.SetText(optionsList[selectedIndex].buttonText);
+
+            if (isExpanded) Collapse(optionsList);
+            else Expand(optionsList);
+            isExpanded = !isExpanded;
             currentlySelectedIndex = selectedIndex;
         }
 

@@ -44,9 +44,9 @@ namespace Bzaar
         [SerializeField] ButtonManager topsBtn;
         [SerializeField] ButtonManager bottomsBtn;
         [SerializeField] ButtonManager avatarBtn;
-        [SerializeField] Button texturesBtn;
-        [SerializeField] Button colorsBtn;
-        [SerializeField] Button propertiesBt;
+        [SerializeField] ButtonManager texturesBtn;
+        [SerializeField] ButtonManager colorsBtn;
+        [SerializeField] ButtonManager propertiesBtn;
         [SerializeField] Button takePhotoBtn;
         [SerializeField] Button recordBtn;
 
@@ -192,25 +192,9 @@ namespace Bzaar
 
 
 
-        public void SendMessage(string message, float time = 5)
-        {
-            if (messageSent) return;
-            StartCoroutine(SendMessage_Routine(message, time));
-        }
-
-        bool messageSent = false;
-        IEnumerator SendMessage_Routine(string message, float time)
-        {
-            messageText.text = message;
-            messageSent = true;
-            yield return new WaitForSeconds(time);
-            messageSent = false;
-            messageText.text = "";
-        }
-
         void ClearActiveUI(Object button, GameObject panel)
         {
-            if (selectedBtn == button) return;//Clears the selected UI only if the UI is not what was clicked
+            //if (selectedBtn == button) return;//Clears the selected UI only if the UI is not what was clicked
             if (openedPanel == panel) return;
 
             if (selectedBtn is Button) (selectedBtn as Button).GetComponent<Image>().sprite = (selectedBtn as Button).GetComponent<ButtonSprites>().GetSprite(false);
@@ -247,27 +231,16 @@ namespace Bzaar
 
 
         #region Button Clicks
-
         public void TopsBtnClicked()
         {
-
             ClearActiveUI(topsBtn, topsPanel);
-            topsPanel.SetActive(!topsPanel.activeSelf);
-            openedPanel = topsPanel;
+            ToggleFocussedUI(topsBtn, topsPanel);
+            if (!topsPanel.gameObject.activeSelf) return;
 
             List<SpawnClothingBtn> buttons = topsPanel.GetComponentsInChildren<SpawnClothingBtn>().ToList();
-
-            if (!topsPanel.gameObject.activeSelf)
-            {
-                buttons.ForEach(button =>
-                {
-                    button.transform.localScale = Vector3.zero;
-                    button.DOKill();
-                });
-                return;
-            }
             buttons.ForEach(item =>
             {
+                item.transform.DOKill();
                 item.transform.localScale = Vector3.zero;
                 item.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InCubic).SetDelay(item.transform.GetSiblingIndex() * 0.05f);
             });
@@ -276,19 +249,12 @@ namespace Bzaar
         {
             ClearActiveUI(bottomsBtn, bottomsPanel);
             ToggleFocussedUI(bottomsBtn, bottomsPanel);
+            if (!bottomsPanel.gameObject.activeSelf) return;
+
             List<SpawnClothingBtn> buttons = bottomsPanel.GetComponentsInChildren<SpawnClothingBtn>().ToList();
-            Debug.Log("BottomsBtnClicked: " + buttons.Count);
-            if (!bottomsPanel.gameObject.activeSelf)
-            {
-                buttons.ForEach(button =>
-                {
-                    button.transform.localScale = Vector3.zero;
-                    button.DOKill();
-                });
-                return;
-            }
             buttons.ForEach(item =>
             {
+                item.transform.DOKill();
                 item.transform.localScale = Vector3.zero;
                 item.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InCubic).SetDelay(item.transform.GetSiblingIndex() * 0.05f);
             });
@@ -297,39 +263,63 @@ namespace Bzaar
         {
             ClearActiveUI(avatarBtn, avatarsPanel);
             ToggleFocussedUI(avatarBtn, avatarsPanel);
+            if (!avatarsPanel.gameObject.activeSelf) return;
 
             List<ButtonManager> buttons = avatarsPanel.GetComponentsInChildren<ButtonManager>().ToList();
-
-            if (!avatarsPanel.gameObject.activeSelf)
-            {
-                buttons.ForEach(button =>
-                {
-                    button.transform.localScale = Vector3.zero;
-                    button.DOKill();
-                });
-                return;
-            }
-
             buttons.ForEach(item =>
             {
+                item.transform.DOKill();
                 item.transform.localScale = Vector3.zero;
                 item.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InCubic).SetDelay(item.transform.GetSiblingIndex() * 0.05f);
             });
-
-
         }
 
         public void TexturesBtnClicked()
         {
+            ClearActiveUI(texturesBtn, texturesPanel);
             ToggleFocussedUI(texturesBtn, texturesPanel);
+            if (!texturesPanel.gameObject.activeSelf) return;
+
+            List<Button> buttons = texturesPanel.GetComponentsInChildren<Button>().ToList();
+            buttons.ForEach(item =>
+            {
+                item.transform.DOKill();
+                item.transform.localScale = Vector3.zero;
+                item.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InCubic).SetDelay(item.transform.GetSiblingIndex() * 0.05f);
+            });
         }
         public void ColorsBtnClicked()
         {
+            ClearActiveUI(colorsBtn, colorsPanel);
             ToggleFocussedUI(colorsBtn, colorsPanel);
+            if (!colorsPanel.gameObject.activeSelf) return;
+
+            List<Button> buttons = colorsPanel.GetComponentsInChildren<Button>().ToList();
+            buttons.ForEach(item =>
+            {
+                item.transform.DOKill();
+                item.transform.localScale = Vector3.zero;
+                item.transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InCubic).SetDelay(buttons.IndexOf(item) * 0.001f);
+            });
+
+            Slider slider = colorsPanel.GetComponentInChildren<Slider>();
+            slider.transform.DOKill();
+            slider.transform.localScale = Vector3.zero;
+            slider.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InCubic).SetDelay(buttons.Count * 0.001f);
         }
         public void PropertiesBtnClicked()
         {
-            ToggleFocussedUI(propertiesBt, propertiesPanel);
+            ClearActiveUI(propertiesBtn, propertiesPanel);
+            ToggleFocussedUI(propertiesBtn, propertiesPanel);
+            if (!propertiesPanel.gameObject.activeSelf) return;
+
+            List<Transform> child = propertiesPanel.GetComponentsInChildren<Transform>().ToList();
+            child.ForEach(item =>
+            {
+                item.DOKill();
+                item.localScale = Vector3.zero;
+                item.DOScale(Vector3.one, 0.5f).SetEase(Ease.InCubic).SetDelay(child.IndexOf(item) * 0.05f);
+            });
         }
 
         //A BLANK SPACE FOR SCULPT MODE
