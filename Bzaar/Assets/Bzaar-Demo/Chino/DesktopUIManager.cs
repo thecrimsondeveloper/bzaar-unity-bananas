@@ -6,6 +6,9 @@ public class DesktopUIManager : MonoBehaviour
 {
     [SerializeField] GameObject propertiesPnl;
     [SerializeField] GameObject colorsPnl;
+    [SerializeField] GameObject savePnl;
+    [SerializeField] GameObject settingsPnl;
+    [SerializeField] GameObject volumePnl;
 
     public void HomeButtonClick() {
        Debug.Log("HomeButtonClicked");
@@ -59,14 +62,32 @@ public class DesktopUIManager : MonoBehaviour
 
     public void SaveButtonClick() {
        Debug.Log("SaveButtonClicked");
+       if(savePnl.activeSelf) {
+            savePnl.SetActive(false);
+        }
+        else {
+            savePnl.SetActive(true);
+        }
     }
 
     public void SettingsButtonClick() {
        Debug.Log("SettingsButtonClicked");
+       if(settingsPnl.activeSelf) {
+            settingsPnl.SetActive(false);
+        }
+        else {
+            settingsPnl.SetActive(true);
+        }
     }
 
     public void VolumeButtonClick() {
        Debug.Log("VolumeButtonClicked");
+       if(volumePnl.activeSelf) {
+            volumePnl.SetActive(false);
+        }
+        else {
+            volumePnl.SetActive(true);
+        }
     }
 
 }
